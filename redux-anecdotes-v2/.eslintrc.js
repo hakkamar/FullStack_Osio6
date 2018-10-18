@@ -1,4 +1,13 @@
 module.exports = {
+    "settings": {
+        "react": {
+        "createClass": "createReactClass", 
+        "pragma": "React",
+        "version": "15.0",
+        "flowVersion": "0.53"
+        },
+        "propWrapperFunctions": [ "forbidExtraProps" ]
+    },
     "env": {
         "browser": true,
         "es6": true,
