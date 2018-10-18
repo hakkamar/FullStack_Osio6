@@ -8,8 +8,13 @@ class Notification extends React.Component {
       borderWidth: 1
     }
     return (
-      <div style={style}>
-        render here notification...
+      <div>
+        {this.props.store.getState().notification !== '' ?
+          <div style={style}>
+            {this.props.store.getState().notification}
+          </div> :
+          <div></div>
+        }
       </div>
     )
   }
