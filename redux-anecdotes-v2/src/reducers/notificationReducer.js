@@ -1,7 +1,7 @@
 const notificationReducer = (state = '', action) => {
   switch (action.type) {
   case 'NOTIFICATION':
-    return action.notification
+    return action.teksti
   default:
     return state
   }

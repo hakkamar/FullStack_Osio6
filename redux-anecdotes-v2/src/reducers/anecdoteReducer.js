@@ -20,6 +20,7 @@ const asObject = (anecdote) => {
 const initialState = anecdotesAtStart.map(asObject)
 
 const anecdoteReducer = (store = initialState, action) => {
+
   if (action.type === 'VOTE') {
     const old = store.filter(a => a.id !== action.data.id)
     const voted = store.find(a => a.id === action.data.id)
