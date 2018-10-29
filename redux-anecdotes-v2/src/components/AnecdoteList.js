@@ -1,13 +1,20 @@
 import React from 'react'
+import Filter from './Filter'
 import { anecdoteVote } from './../reducers/anecdoteReducer'
 import { notificationChange } from './../reducers/notificationReducer'
 
 class AnecdoteList extends React.Component {
   render() {
-    const anecdotes = this.props.store.getState().anecdotes
+    var anecdotes = this.props.store.getState().anecdotes
+    const filtteri = this.props.store.getState().filter
+    if (filtteri !== '') {
+      anecdotes = anecdotes.filter(a => a.content.includes(filtteri))
+    }
+
     return (
       <div>
         <h2>Anecdotes</h2>
+        <Filter store={this.props.store} />
         {anecdotes.sort((a, b) => b.votes - a.votes).map(anecdote =>
           <div key={anecdote.id}>
             <div>
