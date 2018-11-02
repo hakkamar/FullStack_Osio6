@@ -3,6 +3,22 @@ import Filter from './Filter'
 import { connect } from 'react-redux'
 import { anecdoteVote } from './../reducers/anecdoteReducer'
 import { notificationChange } from './../reducers/notificationReducer'
+import anecdoteService from './../services/anecdotes'
+
+const aanestys = async (props, anecdote) => {
+  const uusiVote = anecdote.votes + 1
+  const updatedAnecdote = {
+    content: anecdote.content,
+    id: anecdote.id,
+    votes: uusiVote
+  }
+  await anecdoteService.update(anecdote.id, updatedAnecdote)
+  props.anecdoteVote(anecdote.id)
+
+  const teksti = 'You voted ' + anecdote.content
+  props.notificationChange(teksti)
+  setTimeout(() => { props.notificationChange('') }, 5000)
+}
 
 const AnecdoteList = (props) => (
   <div>
@@ -15,13 +31,7 @@ const AnecdoteList = (props) => (
         </div>
         <div>
           has {anecdote.votes}
-          <button onClick={() =>
-          { props.anecdoteVote(anecdote.id)
-            const teksti = 'You voted ' + anecdote.content
-            props.notificationChange(teksti)
-            setTimeout(() => { props.notificationChange('') }, 5000)
-          }
-          }>
+          <button onClick= { () => aanestys(props, anecdote)}>
             vote
           </button>
         </div>
