@@ -8,8 +8,7 @@ const aanestys = async (props, anecdote) => {
   props.anecdoteVote(anecdote)
 
   const teksti = 'You voted ' + anecdote.content
-  props.notificationChange(teksti)
-  setTimeout(() => { props.notificationChange('') }, 5000)
+  props.notificationChange(teksti, 5)
 }
 
 const AnecdoteList = (props) => (

@@ -7,10 +7,21 @@ const notificationReducer = (state = '', action) => {
   }
 }
 
-export const notificationChange = (teksti) => {
-  return {
-    type: 'NOTIFICATION',
-    teksti
+export const notificationChange = (teksti, viiveSekuneissa) => {
+  const viive = viiveSekuneissa * 1000
+  return async (dispatch) => {
+    dispatch({
+      type: 'NOTIFICATION',
+      teksti
+    })
+
+    teksti = ''
+    setTimeout(() => {
+      dispatch({
+        type: 'NOTIFICATION',
+        teksti
+      })
+    }, viive)
   }
 }
 
