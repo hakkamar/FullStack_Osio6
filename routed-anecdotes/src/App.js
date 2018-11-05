@@ -1,16 +1,36 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Route, NavLink, Redirect } from 'react-router-dom'
+
+const ilmoitusStyle = {
+  textAlign: 'center',
+  borderRadius: 25,
+  backgroundColor: 'lightgrey',
+  color: 'green',
+  fontStyle: 'italic',
+  fontSize: 25
+}
+
+const menuStyle = {
+  backgroundColor: 'lightgreen',
+}
+
+const aktiivinen = {
+    fontWeight: 'bold',
+    color: 'red',
+    textDecorationLine: 'underline',
+    textDecorationStyle: 'wavy',
+}
 
 const Menu = () => (
-  <div>    
-    <Link to="/">anecdotes</Link>         &nbsp;
-    <Link to="/create">create new</Link>  &nbsp;
-    <Link to="/about">about</Link>        &nbsp;
+  <div style= {menuStyle}>
+    <NavLink exact to="/" activeStyle={aktiivinen} >anecdotes</NavLink>   &nbsp;
+    <NavLink to="/create" activeStyle={aktiivinen} >create new</NavLink>  &nbsp;
+    <NavLink to="/about" activeStyle={aktiivinen}  >about</NavLink>       &nbsp;
   </div>
 )
 
 const Ilmoitus = ( {ilmoitus} ) => (
-  <div>
+  <div style={ilmoitusStyle}>
     {ilmoitus === ''
       ? <div></div>
       : <p> {ilmoitus} </p>
@@ -24,7 +44,7 @@ const AnecdoteList = ({ anecdotes }) => (
     <ul>
       {anecdotes.map(anecdote => 
         <li key={anecdote.id} >
-          <Link to={`/anecdotes/${anecdote.id}`}> {anecdote.content} </Link>
+          <NavLink to={`/anecdotes/${anecdote.id}`}> {anecdote.content} </NavLink>
         </li>
       )}
     </ul>
