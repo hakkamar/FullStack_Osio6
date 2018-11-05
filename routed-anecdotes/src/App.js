@@ -1,11 +1,20 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom'
 
 const Menu = () => (
   <div>    
     <Link to="/">anecdotes</Link>         &nbsp;
     <Link to="/create">create new</Link>  &nbsp;
     <Link to="/about">about</Link>        &nbsp;
+  </div>
+)
+
+const Ilmoitus = ( {ilmoitus} ) => (
+  <div>
+    {ilmoitus === ''
+      ? <div></div>
+      : <p> {ilmoitus} </p>
+    }
   </div>
 )
 
@@ -26,8 +35,8 @@ const Anecdote = ({anecdote}) => {
   return(
   <div>
     <h2>{anecdote.content} by {anecdote.author}</h2>
-    <div>has {anecdote.votes} votes </div>
-    <div>for more information see <a href={anecdote.info}>{anecdote.info}</a>  </div>
+    <p> has {anecdote.votes} votes </p>
+    <p>for more information see <a href={anecdote.info}>{anecdote.info}</a>  </p>
   </div>
 )}
 
@@ -64,7 +73,7 @@ class CreateNew extends React.Component {
   }
 
   handleChange = (e) => {
-    console.log(e.target.name, e.target.value)
+    //console.log(e.target.name, e.target.value)
     this.setState({ [e.target.name]: e.target.value })
   }
 
@@ -99,7 +108,6 @@ class CreateNew extends React.Component {
         </form>
       </div>  
     )
-
   }
 }
 
@@ -131,6 +139,12 @@ class App extends React.Component {
   addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     this.setState({ anecdotes: this.state.anecdotes.concat(anecdote) })
+
+    const notifikaatio = 'a new anecdote ' + anecdote.content + ' created!'
+    this.setState({ notification: notifikaatio })
+    setTimeout(() => {
+      this.setState({ notification: '' })
+    }, 10000)
   }
 
   anecdoteById = (id) =>
@@ -150,20 +164,22 @@ class App extends React.Component {
   }
 
   render() {
-    const anecdoteById = (id) => 
-      this.state.anecdotes.find(anecdote => anecdote.id === id)
-
     return (
       <div>
         <Router> 
           <div>
             <h1>Software anecdotes</h1>
               <Menu />
+              <Ilmoitus ilmoitus= {this.state.notification}/>
               <Route exact path="/" render={ () => <AnecdoteList anecdotes={this.state.anecdotes} /> } />
-              <Route exact path="/create" render={ () => <CreateNew addNew={this.addNew} /> } />
+              <Route path="/create" render={() =>
+                this.state.notification === ''
+                  ? <CreateNew addNew={this.addNew} />
+                  : <Redirect to="/" />
+              }/>
               <Route exact path="/about" render={ () => <About /> } />
               <Route exact path="/anecdotes/:id" render={({match}) =>
-                <Anecdote anecdote={anecdoteById(match.params.id)} />}
+                <Anecdote anecdote={this.anecdoteById(match.params.id)} />}
               />
           </div>
         </Router>
