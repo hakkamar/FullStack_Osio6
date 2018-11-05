@@ -1,7 +1,9 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, NavLink, Redirect } from 'react-router-dom'
+import { ListGroup, ListGroupItem, Grid, Row, Col, Form, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap'
 
 const ilmoitusStyle = {
+  margin: 10,
   textAlign: 'center',
   borderRadius: 25,
   backgroundColor: 'lightgrey',
@@ -11,6 +13,9 @@ const ilmoitusStyle = {
 }
 
 const menuStyle = {
+  paddingLeft: 10,
+  borderRadius: 25,
+  margin: 10,
   backgroundColor: 'lightgreen',
 }
 
@@ -41,13 +46,13 @@ const Ilmoitus = ( {ilmoitus} ) => (
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
-    <ul>
+    <ListGroup>
       {anecdotes.map(anecdote => 
-        <li key={anecdote.id} >
+        <ListGroupItem key={anecdote.id}>
           <NavLink to={`/anecdotes/${anecdote.id}`}> {anecdote.content} </NavLink>
-        </li>
+        </ListGroupItem>
       )}
-    </ul>
+    </ListGroup>
   </div>
 )
 
@@ -63,19 +68,34 @@ const Anecdote = ({anecdote}) => {
 const About = () => (
   <div>
     <h2>About anecdote app</h2>
-    <p>According to Wikipedia:</p>
-    
-    <em>An anecdote is a brief, revealing account of an individual person or an incident. 
-      Occasionally humorous, anecdotes differ from jokes because their primary purpose is not simply to provoke laughter but to reveal a truth more general than the brief tale itself, 
-      such as to characterize a person by delineating a specific quirk or trait, to communicate an abstract idea about a person, place, or thing through the concrete details of a short narrative. 
-      An anecdote is "a story with a point."</em>
-
-    <p>Software engineering is full of excellent anecdotes, at this app you can find the best and add more.</p>
+    <Grid>
+      <Row className="show-grid">
+        <Col xs={12} md={8}>
+          According to Wikipedia:
+        </Col>
+        <Col xs={6} md={4}></Col>
+      </Row>
+      <p></p>
+      <Row className="show-grid">
+        <Col xs={12} md={8}>
+            An anecdote is a brief, revealing account of an individual person or an incident. 
+            Occasionally humorous, anecdotes differ from jokes because their primary purpose is not simply to provoke laughter but to reveal a truth more general than the brief tale itself, 
+            such as to characterize a person by delineating a specific quirk or trait, to communicate an abstract idea about a person, place, or thing through the concrete details of a short narrative. 
+            An anecdote is "a story with a point."
+            Software engineering is full of excellent anecdotes, at this app you can find the best and add more.
+        </Col>
+        <Col xs={6} md={4}>
+          <img src={require('./assets/Bill_Gates.jpg')} alt="GillBates" ></img>
+        </Col>
+      </Row>      
+    </Grid>
+    <p></p>
   </div>
 )
 
 const Footer = () => (
   <div>
+    <p></p>
     Anecdote app for <a href='https://courses.helsinki.fi/fi/TKT21009/121540749'>Full Stack -sovelluskehitys</a>.
 
     See <a href='https://github.com/mluukkai/routed-anecdotes'>https://github.com/mluukkai/routed-anecdotes</a> for the source code. 
@@ -93,7 +113,6 @@ class CreateNew extends React.Component {
   }
 
   handleChange = (e) => {
-    //console.log(e.target.name, e.target.value)
     this.setState({ [e.target.name]: e.target.value })
   }
 
@@ -111,21 +130,37 @@ class CreateNew extends React.Component {
     return(
       <div>
         <h2>create a new anecdote</h2>
-        <form onSubmit={this.handleSubmit}>
-          <div>
-            content 
-            <input name='content' value={this.state.content} onChange={this.handleChange} />
-          </div>
-          <div>
-            author
-            <input name='author' value={this.state.author} onChange={this.handleChange} />
-          </div>
-          <div>
-            url for more info
-            <input name='info' value={this.state.info} onChange={this.handleChange} />
-          </div> 
-          <button>create</button>
-        </form>
+        <Form horizontal onSubmit={this.handleSubmit}>
+          <FormGroup controlId="formHorizontalContent">
+            <Col componentClass={ControlLabel} sm={2}>
+              content
+            </Col>
+            <Col sm={10}>
+              <FormControl name='content' value={this.state.content} onChange={this.handleChange} placeholder="Anekdootti tähän" />
+            </Col>
+          </FormGroup>
+          <FormGroup controlId="formHorizontalAuthor">
+            <Col componentClass={ControlLabel} sm={2}>
+              author
+            </Col>
+            <Col sm={10}>
+              <FormControl name='author' value={this.state.author} onChange={this.handleChange} placeholder="Kenen anekdootti" />
+            </Col>
+          </FormGroup>
+          <FormGroup controlId="formHorizontalUrl">
+            <Col componentClass={ControlLabel} sm={2}>
+              url for more info
+            </Col>
+            <Col sm={10}>
+              <FormControl name='info' value={this.state.info} onChange={this.handleChange} placeholder="URLia vielä kaivataan" />
+            </Col>
+          </FormGroup>
+          <FormGroup>
+            <Col smOffset={2} sm={10}>
+              <Button type="submit">create</Button>
+            </Col>
+          </FormGroup>
+        </Form>
       </div>  
     )
   }
