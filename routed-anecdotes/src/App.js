@@ -13,10 +13,23 @@ const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
-    </ul>  
+      {anecdotes.map(anecdote => 
+        <li key={anecdote.id} >
+          <Link to={`/anecdotes/${anecdote.id}`}> {anecdote.content} </Link>
+        </li>
+      )}
+    </ul>
   </div>
 )
+
+const Anecdote = ({anecdote}) => {
+  return(
+  <div>
+    <h2>{anecdote.content} by {anecdote.author}</h2>
+    <div>has {anecdote.votes} votes </div>
+    <div>for more information see <a href={anecdote.info}>{anecdote.info}</a>  </div>
+  </div>
+)}
 
 const About = () => (
   <div>
@@ -137,15 +150,21 @@ class App extends React.Component {
   }
 
   render() {
+    const anecdoteById = (id) => 
+      this.state.anecdotes.find(anecdote => anecdote.id === id)
+
     return (
       <div>
         <Router> 
           <div>
             <h1>Software anecdotes</h1>
               <Menu />
-              <Route exact path="/" render={() => <AnecdoteList anecdotes={this.state.anecdotes} /> } />
-              <Route exact path="/create" render={() => <CreateNew addNew={this.addNew}/>} />
-              <Route exact path="/about" render={() => <About />} />
+              <Route exact path="/" render={ () => <AnecdoteList anecdotes={this.state.anecdotes} /> } />
+              <Route exact path="/create" render={ () => <CreateNew addNew={this.addNew} /> } />
+              <Route exact path="/about" render={ () => <About /> } />
+              <Route exact path="/anecdotes/:id" render={({match}) =>
+                <Anecdote anecdote={anecdoteById(match.params.id)} />}
+              />
           </div>
         </Router>
         <div><Footer /></div>
